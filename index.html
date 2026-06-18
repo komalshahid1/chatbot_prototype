@@ -4,74 +4,1411 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Functional AI Website Chatbot Prototype</title>
-<style>
-:root{--bg:#f6f7fb;--card:#fff;--text:#111827;--muted:#667085;--border:#d8deea;--dark:#101828;--accent:#4f46e5;--good:#12b76a;--warn:#f79009;--bad:#f04438;--shadow:0 10px 28px rgba(16,24,40,.08)}*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}aside{background:var(--dark);color:#fff;padding:22px 16px;position:sticky;top:0;height:100vh}.logo{font-weight:900;font-size:20px;margin-bottom:25px}.logo small{display:block;color:#9ca3af;font-size:12px;margin-top:4px}.navtitle{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#98a2b3;margin:20px 10px 8px}.nav button{width:100%;text-align:left;background:transparent;color:#d0d5dd;border:0;padding:12px;border-radius:10px;cursor:pointer;font-size:14px}.nav button.active,.nav button:hover{background:rgba(255,255,255,.1);color:#fff}main{padding:26px}.screen{display:none}.screen.active{display:block}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:22px}.crumb{font-size:13px;color:var(--muted);margin-bottom:6px}h1{margin:0;font-size:28px;letter-spacing:-.03em}h2{font-size:18px;margin:0 0 14px}.grid{display:grid;gap:18px}.cols4{grid-template-columns:repeat(4,1fr)}.cols3{grid-template-columns:repeat(3,1fr)}.cols2{grid-template-columns:repeat(2,1fr)}.main{grid-template-columns:1.1fr .9fr}.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)}.metric .v{font-size:30px;font-weight:900;margin:8px 0}.muted{color:var(--muted)}.pill{display:inline-flex;padding:5px 10px;border-radius:999px;background:#eef2ff;color:var(--accent);font-weight:800;font-size:12px}.pill.good{background:#ecfdf3;color:var(--good)}.pill.warn{background:#fffaeb;color:var(--warn)}.pill.bad{background:#fef3f2;color:var(--bad)}.btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.bad{background:var(--bad);border-color:var(--bad);color:#fff}.btn.small{font-size:12px;padding:7px 9px}label{display:block;font-size:13px;font-weight:800;margin-bottom:7px}.row{margin-bottom:14px}input,textarea,select{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px}textarea{min-height:120px;resize:vertical}.source{border:1px solid var(--border);background:#fbfcfe;padding:12px;border-radius:12px;margin-bottom:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:10px}.tabs button{border:1px solid var(--border);background:#fff;border-radius:999px;padding:9px 12px;font-weight:800;cursor:pointer;color:var(--muted)}.tabs button.active{background:var(--accent);border-color:var(--accent);color:#fff}.tab{display:none}.tab.active{display:block}.chat{height:560px;border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff}.chatHead{background:var(--dark);color:#fff;padding:14px;font-weight:900;display:flex;justify-content:space-between}.chatBody{flex:1;overflow:auto;background:#f9fafb;padding:16px}.bubble{max-width:78%;padding:11px 13px;border-radius:14px;margin-bottom:10px;font-size:14px;line-height:1.45;white-space:pre-line}.bot{background:#fff;border:1px solid var(--border)}.user{background:var(--accent);color:#fff;margin-left:auto}.chatInput{border-top:1px solid var(--border);padding:12px;display:flex;gap:8px}.chatInput input{flex:1}.tableWrap{overflow:auto}.table{border-collapse:collapse;width:100%;min-width:700px;font-size:14px}.table th,.table td{border-bottom:1px solid var(--border);padding:12px 10px;text-align:left;vertical-align:top}.table th{font-size:12px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em}.preview{height:560px;border:1px dashed #b8c0cc;border-radius:16px;position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(17,24,39,.05) 1px,transparent 1px),linear-gradient(rgba(17,24,39,.05) 1px,transparent 1px);background-size:30px 30px}.fake{padding:28px}.widget{position:absolute;right:22px;bottom:22px;width:330px;max-width:calc(100% - 44px);border:1px solid var(--border);border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 20px 45px rgba(16,24,40,.22)}.widget .head{background:var(--accent);color:#fff;padding:14px;font-weight:900;display:flex;justify-content:space-between}.widget .body{height:280px;overflow:auto;background:#f9fafb;padding:14px}.widget .foot{border-top:1px solid var(--border);display:flex;gap:7px;padding:10px}.launcher{position:absolute;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;display:none;place-items:center;background:var(--accent);color:#fff;border:0;font-size:24px;box-shadow:0 20px 45px rgba(16,24,40,.22)}.code{background:#0b1020;color:#d1e7ff;border-radius:12px;padding:14px;font-family:ui-monospace,Menlo,monospace;font-size:13px;white-space:pre-wrap}.toast{position:fixed;right:24px;bottom:24px;background:#111827;color:#fff;border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);opacity:0;transform:translateY(10px);transition:.2s;z-index:9}.toast.show{opacity:1;transform:translateY(0)}.empty{text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:12px;padding:18px}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.flow .box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;min-height:110px}.flow strong{display:block;margin:8px 0 6px}@media(max-width:1000px){.app{grid-template-columns:1fr}aside{position:relative;height:auto}.cols4,.cols3,.cols2,.main,.flow{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
 
-a { color: var(--accent, #4f46e5); font-weight: 700; text-decoration: none; }
-a:hover { text-decoration: underline; }
-pre.code { white-space: pre-wrap; }
+<style>
+:root{
+  --bg:#f6f7fb;
+  --card:#fff;
+  --text:#111827;
+  --muted:#667085;
+  --border:#d8deea;
+  --dark:#101828;
+  --accent:#4f46e5;
+  --good:#12b76a;
+  --warn:#f79009;
+  --bad:#f04438;
+  --shadow:0 10px 28px rgba(16,24,40,.08);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.app{
+  display:grid;
+  grid-template-columns:250px 1fr;
+  min-height:100vh;
+}
+
+aside{
+  background:var(--dark);
+  color:#fff;
+  padding:22px 16px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:auto;
+}
+
+.logo{
+  font-weight:900;
+  font-size:20px;
+  margin-bottom:25px;
+}
+
+.logo small{
+  display:block;
+  color:#9ca3af;
+  font-size:12px;
+  margin-top:4px;
+}
+
+.navtitle{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:#98a2b3;
+  margin:20px 10px 8px;
+}
+
+.nav button{
+  width:100%;
+  text-align:left;
+  background:transparent;
+  color:#d0d5dd;
+  border:0;
+  padding:12px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.nav button.active,
+.nav button:hover{
+  background:rgba(255,255,255,.1);
+  color:#fff;
+}
+
+main{padding:26px}
+
+.screen{display:none}
+.screen.active{display:block}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:center;
+  margin-bottom:22px;
+}
+
+.crumb{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+h1{
+  margin:0;
+  font-size:28px;
+  letter-spacing:-.03em;
+}
+
+h2{
+  font-size:18px;
+  margin:0 0 14px;
+}
+
+h3{
+  margin:18px 0 10px;
+}
+
+.grid{
+  display:grid;
+  gap:18px;
+}
+
+.cols4{grid-template-columns:repeat(4,1fr)}
+.cols3{grid-template-columns:repeat(3,1fr)}
+.cols2{grid-template-columns:repeat(2,1fr)}
+.main{grid-template-columns:1.1fr .9fr}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+}
+
+.metric .v{
+  font-size:30px;
+  font-weight:900;
+  margin:8px 0;
+}
+
+.muted{color:var(--muted)}
+
+.pill{
+  display:inline-flex;
+  padding:5px 10px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:var(--accent);
+  font-weight:800;
+  font-size:12px;
+}
+
+.pill.good{background:#ecfdf3;color:var(--good)}
+.pill.warn{background:#fffaeb;color:var(--warn)}
+.pill.bad{background:#fef3f2;color:var(--bad)}
+
+.btn{
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:10px;
+  padding:10px 14px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.btn.primary{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+}
+
+.btn.bad{
+  background:var(--bad);
+  border-color:var(--bad);
+  color:#fff;
+}
+
+.btn.small{
+  font-size:12px;
+  padding:7px 9px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.row{margin-bottom:14px}
+
+input,textarea,select{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font-size:14px;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+.source{
+  border:1px solid var(--border);
+  background:#fbfcfe;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:16px;
+  border-bottom:1px solid var(--border);
+  padding-bottom:10px;
+  flex-wrap:wrap;
+}
+
+.tabs button{
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:999px;
+  padding:9px 12px;
+  font-weight:800;
+  cursor:pointer;
+  color:var(--muted);
+}
+
+.tabs button.active{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+}
+
+.tab{display:none}
+.tab.active{display:block}
+
+.chat{
+  height:560px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+}
+
+.chatHead{
+  background:var(--dark);
+  color:#fff;
+  padding:14px;
+  font-weight:900;
+  display:flex;
+  justify-content:space-between;
+}
+
+.chatBody{
+  flex:1;
+  overflow:auto;
+  background:#f9fafb;
+  padding:16px;
+}
+
+.bubble{
+  max-width:78%;
+  padding:11px 13px;
+  border-radius:14px;
+  margin-bottom:10px;
+  font-size:14px;
+  line-height:1.45;
+  white-space:pre-line;
+}
+
+.bot{
+  background:#fff;
+  border:1px solid var(--border);
+}
+
+.user{
+  background:var(--accent);
+  color:#fff;
+  margin-left:auto;
+}
+
+.chatInput{
+  border-top:1px solid var(--border);
+  padding:12px;
+  display:flex;
+  gap:8px;
+}
+
+.chatInput input{flex:1}
+
+.tableWrap{overflow:auto}
+
+.table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:700px;
+  font-size:14px;
+}
+
+.table th,
+.table td{
+  border-bottom:1px solid var(--border);
+  padding:12px 10px;
+  text-align:left;
+  vertical-align:top;
+}
+
+.table th{
+  font-size:12px;
+  text-transform:uppercase;
+  color:var(--muted);
+  letter-spacing:.05em;
+}
+
+.preview{
+  height:560px;
+  border:1px dashed #b8c0cc;
+  border-radius:16px;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(90deg,rgba(17,24,39,.05) 1px,transparent 1px),
+    linear-gradient(rgba(17,24,39,.05) 1px,transparent 1px);
+  background-size:30px 30px;
+}
+
+.fake{padding:28px}
+
+.widget{
+  position:absolute;
+  right:22px;
+  bottom:22px;
+  width:330px;
+  max-width:calc(100% - 44px);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 20px 45px rgba(16,24,40,.22);
+}
+
+.widget .head{
+  background:var(--accent);
+  color:#fff;
+  padding:14px;
+  font-weight:900;
+  display:flex;
+  justify-content:space-between;
+}
+
+.widget .body{
+  height:280px;
+  overflow:auto;
+  background:#f9fafb;
+  padding:14px;
+}
+
+.widget .foot{
+  border-top:1px solid var(--border);
+  display:flex;
+  gap:7px;
+  padding:10px;
+}
+
+.launcher{
+  position:absolute;
+  right:22px;
+  bottom:22px;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  display:none;
+  place-items:center;
+  background:var(--accent);
+  color:#fff;
+  border:0;
+  font-size:24px;
+  box-shadow:0 20px 45px rgba(16,24,40,.22);
+}
+
+.code{
+  background:#0b1020;
+  color:#d1e7ff;
+  border-radius:12px;
+  padding:14px;
+  font-family:ui-monospace,Menlo,monospace;
+  font-size:13px;
+  white-space:pre-wrap;
+  overflow:auto;
+}
+
+.toast{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  background:#111827;
+  color:#fff;
+  border-radius:12px;
+  padding:12px 14px;
+  box-shadow:var(--shadow);
+  opacity:0;
+  transform:translateY(10px);
+  transition:.2s;
+  z-index:9;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed var(--border);
+  border-radius:12px;
+  padding:18px;
+}
+
+.flow{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+}
+
+.flow .box{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  text-align:center;
+  min-height:110px;
+}
+
+.flow strong{
+  display:block;
+  margin:8px 0 6px;
+}
+
+a{
+  color:var(--accent);
+  font-weight:700;
+  text-decoration:none;
+}
+
+a:hover{text-decoration:underline}
+
+@media(max-width:1000px){
+  .app{grid-template-columns:1fr}
+  aside{position:relative;height:auto}
+  .cols4,.cols3,.cols2,.main,.flow{grid-template-columns:1fr}
+  .top{align-items:flex-start;flex-direction:column}
+}
 </style>
 </head>
+
 <body>
-<div class="app"><aside><div class="logo">SiteBot Studio<small>Functional JS prototype</small></div><div class="nav"><div class="navtitle">Product</div><button class="active" data-go="overview">Overview</button><button data-go="create">Create Chatbot</button><button data-go="sources">Training Sources</button><button data-go="playground">Playground</button><button data-go="widget">Website Widget</button><button data-go="convos">Conversations</button><button data-go="leads">Leads</button><button data-go="analytics">Analytics</button><button data-go="settings">Settings</button><div class="navtitle">Concept</div><button data-go="flow">How RAG Works</button></div></aside><main>
-<section id="overview" class="screen active"><div class="top"><div><div class="crumb">Workspace / <span data-bind="business"></span></div><h1>Dashboard Overview</h1></div><button class="btn primary" onclick="go('create')">+ Create Chatbot</button></div><div class="grid cols4"><div class="card metric"><div class="muted">Conversations</div><div class="v" id="mConvos">0</div><span class="pill good">Live demo</span></div><div class="card metric"><div class="muted">Leads</div><div class="v" id="mLeads">0</div><span class="pill good">Captured</span></div><div class="card metric"><div class="muted">Unanswered</div><div class="v" id="mUnanswered">0</div><span class="pill warn">Improve data</span></div><div class="card metric"><div class="muted">AI Replies</div><div class="v" id="mReplies">0</div><span class="pill">5k limit</span></div></div><div class="grid main" style="margin-top:18px"><div class="card"><h2>What works in this prototype</h2><div class="source"><b>1. Add chatbot details</b><br><span class="muted">Business name, website, welcome/fallback messages.</span></div><div class="source"><b>2. Add training data</b><br><span class="muted">Manual text, FAQs, and sample website page text.</span></div><div class="source"><b>3. Ask questions</b><br><span class="muted">The JS searches saved data and simulates an AI answer.</span></div><div class="source"><b>4. Widget preview</b><br><span class="muted">Send messages, minimize/open, copy script.</span></div></div><div class="card"><h2>Active Chatbot</h2><p><b data-bind="bot"></b></p><p class="muted"><span data-bind="url"></span></p><p class="muted">Sources: <span id="mSources">0</span> · Chunks: <span id="mChunks">0</span></p><button class="btn primary" onclick="go('playground')">Test Chatbot</button> <button class="btn" onclick="resetDemo()">Reset Demo</button></div></div></section>
-<section id="create" class="screen"><div class="top"><div><div class="crumb">Workspace / Chatbots</div><h1>Create Chatbot</h1></div></div><div class="grid main"><div class="card"><form id="botForm"><div class="row"><label>Chatbot Name</label><input id="botName" required></div><div class="row"><label>Business Name</label><input id="business" required></div><div class="row"><label>Website URL</label><input id="url" required></div><div class="row"><label>Welcome Message</label><input id="welcome"></div><div class="row"><label>Fallback Message</label><input id="fallback"></div><button class="btn primary">Save & Add Training Data</button></form></div><div class="card"><h2>Live Summary</h2><p><b data-bind="bot"></b></p><p class="muted"><span data-bind="business"></span> · <span data-bind="url"></span></p><div class="source"><b>MVP rule</b><br><span class="muted">Website-only. No WhatsApp, Instagram, Slack, phone, CRM, or extra integrations.</span></div></div></div></section>
-<section id="sources" class="screen"><div class="top"><div><div class="crumb">Chatbot / Training</div><h1>Training Sources</h1></div><button class="btn primary" onclick="trainAll()">Train Chatbot</button></div><div class="tabs"><button class="active" data-tab="manual">Manual Text</button><button data-tab="faq">FAQ</button><button data-tab="web">Website Page</button></div><div class="grid main"><div class="card"><div class="tab active" id="manual"><h2>Add Manual Business Info</h2><form id="manualForm"><div class="row"><label>Title</label><input id="manualTitle" value="Pricing and Refund Policy"></div><div class="row"><label>Content</label><textarea id="manualContent">Our Basic plan is 3000 PKR/month. Our Pro plan is 7000 PKR/month. Refunds are available within 7 days only if the service has not been used.</textarea></div><button class="btn primary">Save Manual Source</button></form></div><div class="tab" id="faq"><h2>Add FAQ</h2><form id="faqForm"><div class="row"><label>Question</label><input id="faqQ" value="What are your working hours?"></div><div class="row"><label>Answer</label><textarea id="faqA">We are open Monday to Saturday from 10 AM to 7 PM.</textarea></div><button class="btn primary">Save FAQ</button></form></div><div class="tab" id="web"><h2>Add Website Page Text</h2><form id="webForm"><div class="row"><label>Page URL</label><input id="pageUrl" value="https://demo-business.com/about"></div><div class="row"><label>Extracted Text</label><textarea id="pageText">Demo Business helps website owners answer visitor questions using an AI chatbot. Customers can ask about pricing, refunds, working hours, and services.</textarea></div><button class="btn primary">Save Website Page</button></form><p class="muted">In the real app, a crawler fills this text. In this prototype, you paste it.</p></div></div><div class="card"><h2>Saved Sources</h2><div id="sourcesList"></div></div></div></section>
-<section id="playground" class="screen"><div class="top"><div><div class="crumb">Chatbot / Testing</div><h1>Playground</h1></div><button class="btn" onclick="clearChat('playMsgs')">Clear</button></div><div class="grid main"><div class="chat"><div class="chatHead"><span data-bind="bot"></span><span class="pill good">Simulated AI</span></div><div id="playMsgs" class="chatBody"></div><form id="playForm" class="chatInput"><input id="playInput" placeholder="Ask: What are your prices?" autocomplete="off"><button class="btn primary">Send</button></form></div><div class="card"><h2>Debug Panel</h2><div id="debug"><div class="empty">Ask a question to see matched source, confidence, and simulated retrieval.</div></div><br><button class="btn" onclick="addUnansweredFAQ()">Add Last Unanswered as FAQ</button> <button class="btn" onclick="go('sources')">Improve Sources</button></div></div></section>
-<section id="widget" class="screen"><div class="top"><div><div class="crumb">Chatbot / Widget</div><h1>Website Widget</h1></div><button class="btn primary" onclick="copyScript()">Copy Script</button></div><div class="grid main"><div class="card"><h2>Customize Widget</h2><form id="widgetForm"><div class="row"><label>Brand Color</label><input type="color" id="color"></div><div class="row"><label>Display Name</label><input id="wName"></div><div class="row"><label>Greeting</label><input id="wGreeting"></div><div class="row"><label>Placeholder</label><input id="wPlaceholder"></div><div class="row"><label>Allowed Domain</label><input id="domain"></div><button class="btn primary">Save Widget</button></form><h2 style="margin-top:18px">Embed Code</h2><div class="code" id="embed"></div></div><div class="preview"><div class="fake"><h2><span data-bind="business"></span> Website</h2><p class="muted">Functional preview. Send a question inside the widget.</p><button class="btn">View Pricing</button></div><button class="launcher" id="launcher" onclick="toggleWidget(true)">💬</button><div class="widget" id="widgetBox"><div class="head"><span id="previewName"></span><button class="btn small" onclick="toggleWidget(false)">−</button></div><div id="widgetMsgs" class="body"></div><form id="widgetChat" class="foot"><input id="widgetInput"><button class="btn primary">→</button></form></div></div></div></section>
-<section id="convos" class="screen"><div class="top"><div><div class="crumb">Chatbot / Conversations</div><h1>Conversations</h1></div><button class="btn" onclick="exportCSV('conversations')">Export CSV</button></div><div class="card tableWrap"><table class="table"><thead><tr><th>Visitor</th><th>Last Message</th><th>Page</th><th>Status</th><th>Date</th></tr></thead><tbody id="convoRows"></tbody></table></div></section>
-<section id="leads" class="screen"><div class="top"><div><div class="crumb">Chatbot / Leads</div><h1>Leads</h1></div><button class="btn" onclick="exportCSV('leads')">Export CSV</button></div><div class="card"><form id="leadForm"><div class="grid cols2"><div class="row"><label>Name</label><input id="leadName" required></div><div class="row"><label>Email</label><input id="leadEmail" type="email" required></div></div><div class="grid cols2"><div class="row"><label>Phone</label><input id="leadPhone" required></div><div class="row"><label>Source Page</label><input id="leadPage" value="/pricing"></div></div><div class="row"><label>Message</label><input id="leadMsg" value="I want pricing details."></div><button class="btn primary">Add Demo Lead</button></form></div><div class="card tableWrap" style="margin-top:18px"><table class="table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Message</th><th>Page</th></tr></thead><tbody id="leadRows"></tbody></table></div></section>
-<section id="analytics" class="screen"><div class="top"><div><div class="crumb">Chatbot / Analytics</div><h1>Analytics</h1></div></div><div class="grid cols3"><div class="card metric"><div class="muted">Resolution Rate</div><div class="v" id="resolution">0%</div></div><div class="card metric"><div class="muted">Lead Conversion</div><div class="v" id="conversion">0%</div></div><div class="card metric"><div class="muted">Estimated AI Cost</div><div class="v" id="cost">$0</div></div></div><div class="card tableWrap" style="margin-top:18px"><h2>Most Asked Questions</h2><table class="table"><thead><tr><th>Question</th><th>Count</th><th>Status</th></tr></thead><tbody id="questionRows"></tbody></table></div></section>
-<section id="settings" class="screen"><div class="top"><div><div class="crumb">Chatbot / Settings</div><h1>Settings</h1></div><button class="btn primary" onclick="saveSettings()">Save Settings</button></div><div class="grid cols2"><div class="card"><h2>AI Instructions</h2><div class="row"><label>System Instructions</label><textarea id="instructions"></textarea></div><div class="row"><label>Fallback Message</label><textarea id="settingsFallback"></textarea></div></div><div class="card"><h2>Usage</h2><div class="source"><b>Model</b><br><span class="muted">Prototype simulates gpt-4.1-mini + text-embedding-3-small.</span></div><div class="source"><b>Used this month</b><br><span class="muted"><span id="used">0</span> AI replies</span></div><div class="source"><b>Estimated cost</b><br><span class="muted" id="settingsCost">$0.00</span></div></div></div></section>
-
-<section id="flow" class="screen">
-  <div class="topbar">
-    <div>
-      <div class="breadcrumb">Prototype / Concept Documentation</div>
-      <h1>How RAG Works</h1>
+<div class="app">
+  <aside>
+    <div class="logo">
+      SiteBot Studio
+      <small>Functional JS prototype</small>
     </div>
-  </div>
 
-  <div class="card">
-    <h2>RAG in one line</h2>
-    <p><strong>RAG = Search your own business data first, then ask the AI to answer using only the matched data.</strong></p>
-    <p class="muted">For this SaaS idea, RAG is what allows every website chatbot to answer from that specific website’s content, FAQs, pricing, refund policy, timings, and business rules.</p>
-  </div>
+    <div class="nav">
+      <div class="navtitle">Product</div>
+      <button class="active" data-go="overview">Overview</button>
+      <button data-go="create">Create Chatbot</button>
+      <button data-go="sources">Training Sources</button>
+      <button data-go="playground">Playground</button>
+      <button data-go="widget">Website Widget</button>
+      <button data-go="convos">Conversations</button>
+      <button data-go="leads">Leads</button>
+      <button data-go="analytics">Analytics</button>
+      <button data-go="settings">Settings</button>
 
-  <div class="card">
-    <h2>The simple product flow</h2>
-    <div class="flow">
-      <div class="box">📄<strong>1. Add Data</strong><span class="muted">Manual text, FAQs, website pages</span></div>
-      <div class="box">✂️<strong>2. Chunk Text</strong><span class="muted">Split long content into smaller pieces</span></div>
-      <div class="box">🔢<strong>3. Embeddings</strong><span class="muted">Convert chunks into meaning-based vectors</span></div>
-      <div class="box">🔍<strong>4. Retrieve</strong><span class="muted">Find the best chunks for the visitor question</span></div>
-      <div class="box">💬<strong>5. Generate</strong><span class="muted">LLM writes the final answer</span></div>
+      <div class="navtitle">Planning</div>
+      <button data-go="projectArchitecture">Project Architecture</button>
+
+      <div class="navtitle">Concept</div>
+      <button data-go="flow">How RAG Works</button>
     </div>
-  </div>
+  </aside>
 
-  <div class="card">
-    <h2>Why RAG is needed</h2>
-    <p>A normal AI model does not automatically know each customer’s latest website content. If a visitor asks about refund policy, prices, services, or business hours, a plain LLM may guess.</p>
-    <div class="grid cols-2">
-      <div class="source-card">
-        <strong>Without RAG</strong>
-        <p class="muted">Visitor: “Can I get a refund?”<br>AI: “You may be eligible for a refund within 30 days.”</p>
-        <p><span class="pill orange">Risk: invented policy</span></p>
+  <main>
+
+    <!-- OVERVIEW -->
+    <section id="overview" class="screen active">
+      <div class="top">
+        <div>
+          <div class="crumb">Workspace / <span data-bind="business"></span></div>
+          <h1>Dashboard Overview</h1>
+        </div>
+        <button class="btn primary" onclick="go('create')">+ Create Chatbot</button>
       </div>
-      <div class="source-card">
-        <strong>With RAG</strong>
-        <p class="muted">System first finds: “Refunds are available within 7 days only if the service has not been used.”<br>AI answers using that exact policy.</p>
-        <p><span class="pill green">Better: grounded answer</span></p>
-      </div>
-    </div>
-  </div>
 
-  <div class="card">
-    <h2>Two phases of RAG</h2>
-    <div class="grid cols-2">
-      <div class="source-card">
-        <strong>Phase A: Training / Indexing</strong>
-        <pre class="code">Business data
+      <div class="grid cols4">
+        <div class="card metric">
+          <div class="muted">Conversations</div>
+          <div class="v" id="mConvos">0</div>
+          <span class="pill good">Live demo</span>
+        </div>
+
+        <div class="card metric">
+          <div class="muted">Leads</div>
+          <div class="v" id="mLeads">0</div>
+          <span class="pill good">Captured</span>
+        </div>
+
+        <div class="card metric">
+          <div class="muted">Unanswered</div>
+          <div class="v" id="mUnanswered">0</div>
+          <span class="pill warn">Improve data</span>
+        </div>
+
+        <div class="card metric">
+          <div class="muted">AI Replies</div>
+          <div class="v" id="mReplies">0</div>
+          <span class="pill">5k limit</span>
+        </div>
+      </div>
+
+      <div class="grid main" style="margin-top:18px">
+        <div class="card">
+          <h2>What works in this prototype</h2>
+
+          <div class="source">
+            <b>1. Add chatbot details</b><br>
+            <span class="muted">Business name, website, welcome/fallback messages.</span>
+          </div>
+
+          <div class="source">
+            <b>2. Add training data</b><br>
+            <span class="muted">Manual text, FAQs, and sample website page text.</span>
+          </div>
+
+          <div class="source">
+            <b>3. Ask questions</b><br>
+            <span class="muted">The JS searches saved data and simulates an AI answer.</span>
+          </div>
+
+          <div class="source">
+            <b>4. Widget preview</b><br>
+            <span class="muted">Send messages, minimize/open, copy script.</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Active Chatbot</h2>
+          <p><b data-bind="bot"></b></p>
+          <p class="muted"><span data-bind="url"></span></p>
+          <p class="muted">Sources: <span id="mSources">0</span> · Chunks: <span id="mChunks">0</span></p>
+          <button class="btn primary" onclick="go('playground')">Test Chatbot</button>
+          <button class="btn" onclick="resetDemo()">Reset Demo</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREATE CHATBOT -->
+    <section id="create" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Workspace / Chatbots</div>
+          <h1>Create Chatbot</h1>
+        </div>
+      </div>
+
+      <div class="grid main">
+        <div class="card">
+          <form id="botForm">
+            <div class="row">
+              <label>Chatbot Name</label>
+              <input id="botName" required>
+            </div>
+
+            <div class="row">
+              <label>Business Name</label>
+              <input id="business" required>
+            </div>
+
+            <div class="row">
+              <label>Website URL</label>
+              <input id="url" required>
+            </div>
+
+            <div class="row">
+              <label>Welcome Message</label>
+              <input id="welcome">
+            </div>
+
+            <div class="row">
+              <label>Fallback Message</label>
+              <input id="fallback">
+            </div>
+
+            <button class="btn primary">Save & Add Training Data</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Live Summary</h2>
+          <p><b data-bind="bot"></b></p>
+          <p class="muted"><span data-bind="business"></span> · <span data-bind="url"></span></p>
+
+          <div class="source">
+            <b>MVP rule</b><br>
+            <span class="muted">Website-only. No WhatsApp, Instagram, Slack, phone, CRM, or extra integrations.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOURCES -->
+    <section id="sources" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Chatbot / Training</div>
+          <h1>Training Sources</h1>
+        </div>
+        <button class="btn primary" onclick="trainAll()">Train Chatbot</button>
+      </div>
+
+      <div class="tabs">
+        <button class="active" data-tab="manual">Manual Text</button>
+        <button data-tab="faq">FAQ</button>
+        <button data-tab="web">Website Page</button>
+      </div>
+
+      <div class="grid main">
+        <div class="card">
+
+          <div class="tab active" id="manual">
+            <h2>Add Manual Business Info</h2>
+            <form id="manualForm">
+              <div class="row">
+                <label>Title</label>
+                <input id="manualTitle" value="Pricing and Refund Policy">
+              </div>
+
+              <div class="row">
+                <label>Content</label>
+                <textarea id="manualContent">Our Basic plan is 3000 PKR/month. Our Pro plan is 7000 PKR/month. Refunds are available within 7 days only if the service has not been used.</textarea>
+              </div>
+
+              <button class="btn primary">Save Manual Source</button>
+            </form>
+          </div>
+
+          <div class="tab" id="faq">
+            <h2>Add FAQ</h2>
+            <form id="faqForm">
+              <div class="row">
+                <label>Question</label>
+                <input id="faqQ" value="What are your working hours?">
+              </div>
+
+              <div class="row">
+                <label>Answer</label>
+                <textarea id="faqA">We are open Monday to Saturday from 10 AM to 7 PM.</textarea>
+              </div>
+
+              <button class="btn primary">Save FAQ</button>
+            </form>
+          </div>
+
+          <div class="tab" id="web">
+            <h2>Add Website Page Text</h2>
+            <form id="webForm">
+              <div class="row">
+                <label>Page URL</label>
+                <input id="pageUrl" value="https://demo-business.com/about">
+              </div>
+
+              <div class="row">
+                <label>Extracted Text</label>
+                <textarea id="pageText">Demo Business helps website owners answer visitor questions using an AI chatbot. Customers can ask about pricing, refunds, working hours, and services.</textarea>
+              </div>
+
+              <button class="btn primary">Save Website Page</button>
+            </form>
+
+            <p class="muted">In the real app, a crawler fills this text. In this prototype, you paste it.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Saved Sources</h2>
+          <div id="sourcesList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAYGROUND -->
+    <section id="playground" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Chatbot / Testing</div>
+          <h1>Playground</h1>
+        </div>
+        <button class="btn" onclick="clearChat('playMsgs')">Clear</button>
+      </div>
+
+      <div class="grid main">
+        <div class="chat">
+          <div class="chatHead">
+            <span data-bind="bot"></span>
+            <span class="pill good">Simulated AI</span>
+          </div>
+
+          <div id="playMsgs" class="chatBody"></div>
+
+          <form id="playForm" class="chatInput">
+            <input id="playInput" placeholder="Ask: What are your prices?" autocomplete="off">
+            <button class="btn primary">Send</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Debug Panel</h2>
+          <div id="debug">
+            <div class="empty">Ask a question to see matched source, confidence, and simulated retrieval.</div>
+          </div>
+
+          <br>
+          <button class="btn" onclick="addUnansweredFAQ()">Add Last Unanswered as FAQ</button>
+          <button class="btn" onclick="go('sources')">Improve Sources</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIDGET -->
+    <section id="widget" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Chatbot / Widget</div>
+          <h1>Website Widget</h1>
+        </div>
+        <button class="btn primary" onclick="copyScript()">Copy Script</button>
+      </div>
+
+      <div class="grid main">
+        <div class="card">
+          <h2>Customize Widget</h2>
+
+          <form id="widgetForm">
+            <div class="row">
+              <label>Brand Color</label>
+              <input type="color" id="color">
+            </div>
+
+            <div class="row">
+              <label>Display Name</label>
+              <input id="wName">
+            </div>
+
+            <div class="row">
+              <label>Greeting</label>
+              <input id="wGreeting">
+            </div>
+
+            <div class="row">
+              <label>Placeholder</label>
+              <input id="wPlaceholder">
+            </div>
+
+            <div class="row">
+              <label>Allowed Domain</label>
+              <input id="domain">
+            </div>
+
+            <button class="btn primary">Save Widget</button>
+          </form>
+
+          <h2 style="margin-top:18px">Embed Code</h2>
+          <div class="code" id="embed"></div>
+        </div>
+
+        <div class="preview">
+          <div class="fake">
+            <h2><span data-bind="business"></span> Website</h2>
+            <p class="muted">Functional preview. Send a question inside the widget.</p>
+            <button class="btn">View Pricing</button>
+          </div>
+
+          <button class="launcher" id="launcher" onclick="toggleWidget(true)">💬</button>
+
+          <div class="widget" id="widgetBox">
+            <div class="head">
+              <span id="previewName"></span>
+              <button class="btn small" onclick="toggleWidget(false)">−</button>
+            </div>
+
+            <div id="widgetMsgs" class="body"></div>
+
+            <form id="widgetChat" class="foot">
+              <input id="widgetInput">
+              <button class="btn primary">→</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONVERSATIONS -->
+    <section id="convos" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Chatbot / Conversations</div>
+          <h1>Conversations</h1>
+        </div>
+        <button class="btn" onclick="exportCSV('conversations')">Export CSV</button>
+      </div>
+
+      <div class="card tableWrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Visitor</th>
+              <th>Last Message</th>
+              <th>Page</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="convoRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section id="leads" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Chatbot / Leads</div>
+          <h1>Leads</h1>
+        </div>
+        <button class="btn" onclick="exportCSV('leads')">Export CSV</button>
+      </div>
+
+      <div class="card">
+        <form id="leadForm">
+          <div class="grid cols2">
+            <div class="row">
+              <label>Name</label>
+              <input id="leadName" required>
+            </div>
+
+            <div class="row">
+              <label>Email</label>
+              <input id="leadEmail" type="email" required>
+            </div>
+          </div>
+
+          <div class="grid cols2">
+            <div class="row">
+              <label>Phone</label>
+              <input id="leadPhone" required>
+            </div>
+
+            <div class="row">
+              <label>Source Page</label>
+              <input id="leadPage" value="/pricing">
+            </div>
+          </div>
+
+          <div class="row">
+            <label>Message</label>
+            <input id="leadMsg" value="I want pricing details.">
+          </div>
+
+          <button class="btn primary">Add Demo Lead</button>
+        </form>
+      </div>
+
+      <div class="card tableWrap" style="margin-top:18px">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Message</th>
+              <th>Page</th>
+            </tr>
+          </thead>
+          <tbody id="leadRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="analytics" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Chatbot / Analytics</div>
+          <h1>Analytics</h1>
+        </div>
+      </div>
+
+      <div class="grid cols3">
+        <div class="card metric">
+          <div class="muted">Resolution Rate</div>
+          <div class="v" id="resolution">0%</div>
+        </div>
+
+        <div class="card metric">
+          <div class="muted">Lead Conversion</div>
+          <div class="v" id="conversion">0%</div>
+        </div>
+
+        <div class="card metric">
+          <div class="muted">Estimated AI Cost</div>
+          <div class="v" id="cost">$0</div>
+        </div>
+      </div>
+
+      <div class="card tableWrap" style="margin-top:18px">
+        <h2>Most Asked Questions</h2>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Count</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="questionRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Chatbot / Settings</div>
+          <h1>Settings</h1>
+        </div>
+        <button class="btn primary" onclick="saveSettings()">Save Settings</button>
+      </div>
+
+      <div class="grid cols2">
+        <div class="card">
+          <h2>AI Instructions</h2>
+
+          <div class="row">
+            <label>System Instructions</label>
+            <textarea id="instructions"></textarea>
+          </div>
+
+          <div class="row">
+            <label>Fallback Message</label>
+            <textarea id="settingsFallback"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Usage</h2>
+
+          <div class="source">
+            <b>Model</b><br>
+            <span class="muted">Prototype simulates gpt-4.1-mini + text-embedding-3-small.</span>
+          </div>
+
+          <div class="source">
+            <b>Used this month</b><br>
+            <span class="muted"><span id="used">0</span> AI replies</span>
+          </div>
+
+          <div class="source">
+            <b>Estimated cost</b><br>
+            <span class="muted" id="settingsCost">$0.00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECT ARCHITECTURE -->
+    <section id="projectArchitecture" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Project / Code Structure</div>
+          <h1>Project Architecture</h1>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Recommended project structure</h2>
+        <p><strong>This should be a full SaaS project with dashboard, backend API, RAG engine, widget script, and background jobs.</strong></p>
+        <p class="muted">For MVP, keep the architecture simple but clean. Do not mix dashboard logic, chatbot logic, RAG logic, and widget logic in one place.</p>
+
+        <pre class="code">chatbot-saas/
+├── backend/
+│   ├── app/
+│   ├── database/
+│   ├── routes/
+│   ├── config/
+│   └── tests/
+│
+├── dashboard/
+│   ├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   └── stores/
+│
+├── widget/
+│   ├── src/
+│   ├── widget.js
+│   └── styles.css
+│
+├── docs/
+│   ├── requirements.md
+│   ├── rag.md
+│   ├── database.md
+│   └── api.md
+│
+└── README.md</pre>
+      </div>
+
+      <div class="card">
+        <h2>Backend architecture</h2>
+        <p class="muted">The backend should contain all business logic: authentication, workspaces, chatbots, training sources, RAG, conversations, leads, billing, and usage limits.</p>
+
+        <pre class="code">backend/
+├── app/
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Workspace.php
+│   │   ├── WorkspaceMember.php
+│   │   ├── Chatbot.php
+│   │   ├── ChatbotSetting.php
+│   │   ├── Source.php
+│   │   ├── SourceChunk.php
+│   │   ├── Conversation.php
+│   │   ├── Message.php
+│   │   ├── Lead.php
+│   │   ├── Feedback.php
+│   │   └── UsageRecord.php
+│   │
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── AuthController.php
+│   │   │   ├── WorkspaceController.php
+│   │   │   ├── ChatbotController.php
+│   │   │   ├── SourceController.php
+│   │   │   ├── TrainingController.php
+│   │   │   ├── WidgetChatController.php
+│   │   │   ├── ConversationController.php
+│   │   │   ├── LeadController.php
+│   │   │   └── UsageController.php
+│   │   │
+│   │   ├── Requests/
+│   │   └── Middleware/
+│   │
+│   ├── Services/
+│   │   ├── Rag/
+│   │   │   ├── TextCleaner.php
+│   │   │   ├── TextChunker.php
+│   │   │   ├── EmbeddingService.php
+│   │   │   ├── VectorSearchService.php
+│   │   │   ├── PromptBuilder.php
+│   │   │   └── RagAnswerService.php
+│   │   │
+│   │   ├── Llm/
+│   │   │   ├── OpenAiClient.php
+│   │   │   └── TokenUsageEstimator.php
+│   │   │
+│   │   ├── Crawler/
+│   │   │   ├── WebsiteCrawler.php
+│   │   │   ├── HtmlTextExtractor.php
+│   │   │   └── SitemapParser.php
+│   │   │
+│   │   └── Billing/
+│   │       ├── UsageLimitService.php
+│   │       └── CostCalculator.php
+│   │
+│   ├── Jobs/
+│   │   ├── TrainSourceJob.php
+│   │   ├── CrawlWebsiteJob.php
+│   │   └── GenerateEmbeddingsJob.php
+│   │
+│   └── Policies/
+│
+├── database/
+│   ├── migrations/
+│   └── seeders/
+│
+├── routes/
+│   ├── api.php
+│   └── web.php
+│
+└── tests/</pre>
+      </div>
+
+      <div class="card">
+        <h2>Dashboard frontend architecture</h2>
+        <p class="muted">The dashboard is where website owners manage everything. It should call backend APIs only. No real AI logic should live inside the dashboard.</p>
+
+        <pre class="code">dashboard/
+├── src/
+│   ├── main.js
+│   ├── App.vue
+│   │
+│   ├── pages/
+│   │   ├── Login.vue
+│   │   ├── Dashboard.vue
+│   │   ├── Chatbots.vue
+│   │   ├── ChatbotCreate.vue
+│   │   ├── ChatbotDetail.vue
+│   │   ├── Sources.vue
+│   │   ├── Playground.vue
+│   │   ├── WidgetSettings.vue
+│   │   ├── Conversations.vue
+│   │   ├── Leads.vue
+│   │   ├── Analytics.vue
+│   │   └── Settings.vue
+│   │
+│   ├── components/
+│   │   ├── Sidebar.vue
+│   │   ├── Topbar.vue
+│   │   ├── MetricCard.vue
+│   │   ├── SourceCard.vue
+│   │   ├── ChatWindow.vue
+│   │   ├── WidgetPreview.vue
+│   │   └── CodeBlock.vue
+│   │
+│   ├── services/
+│   │   ├── api.js
+│   │   ├── authService.js
+│   │   ├── chatbotService.js
+│   │   ├── sourceService.js
+│   │   ├── conversationService.js
+│   │   └── leadService.js
+│   │
+│   ├── stores/
+│   │   ├── authStore.js
+│   │   ├── workspaceStore.js
+│   │   └── chatbotStore.js
+│   │
+│   └── router/
+│       └── index.js</pre>
+      </div>
+
+      <div class="card">
+        <h2>Widget architecture</h2>
+        <p class="muted">The widget should be lightweight. Do not load your full dashboard frontend into customer websites.</p>
+
+        <pre class="code">widget/
+├── src/
+│   ├── widget.js
+│   ├── api.js
+│   ├── state.js
+│   ├── renderer.js
+│   ├── events.js
+│   ├── leadForm.js
+│   └── styles.css
+│
+└── dist/
+    └── widget.js</pre>
+
+        <p class="muted">Customer installs it like this:</p>
+
+        <pre class="code">&lt;script
+  src="https://yourdomain.com/widget.js"
+  data-chatbot-id="cb_123456"
+  async&gt;
+&lt;/script&gt;</pre>
+      </div>
+
+      <div class="card">
+        <h2>RAG service architecture</h2>
+        <p class="muted">Keep RAG code isolated in its own service folder. This prevents your controllers from becoming messy.</p>
+
+        <pre class="code">Services/Rag/
+├── TextCleaner.php
+│   └── removes HTML, footer noise, nav text, duplicate spaces
+│
+├── TextChunker.php
+│   └── splits content into 500–800 token chunks
+│
+├── EmbeddingService.php
+│   └── calls text-embedding-3-small
+│
+├── VectorSearchService.php
+│   └── searches pgvector using workspace_id + chatbot_id
+│
+├── PromptBuilder.php
+│   └── creates strict prompt using matched chunks
+│
+└── RagAnswerService.php
+    └── complete flow: retrieve → prompt → LLM answer</pre>
+      </div>
+
+      <div class="card">
+        <h2>Main models we will use</h2>
+
+        <div class="grid cols2">
+          <div class="source">
+            <b>Embedding Model</b>
+            <p><span class="pill">text-embedding-3-small</span></p>
+            <p class="muted">Used when training sources and when a visitor asks a question. Converts text into vectors for semantic search.</p>
+          </div>
+
+          <div class="source">
+            <b>Answer Model</b>
+            <p><span class="pill">gpt-4.1-mini</span></p>
+            <p class="muted">Used to generate the final chatbot reply after the system retrieves matching chunks.</p>
+          </div>
+
+          <div class="source">
+            <b>Cheap Mode Later</b>
+            <p><span class="pill">gpt-4.1-nano / mini model</span></p>
+            <p class="muted">Can be used for free plans or low-cost plans later. Do not optimize too early.</p>
+          </div>
+
+          <div class="source">
+            <b>Vector Store</b>
+            <p><span class="pill">PostgreSQL + pgvector</span></p>
+            <p class="muted">Stores source chunks and embeddings. Keeps MVP simpler than adding Pinecone/Qdrant at the start.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Laravel models</h2>
+
+        <pre class="code">User
+Workspace
+WorkspaceMember
+Chatbot
+ChatbotSetting
+Source
+SourceChunk
+Conversation
+Message
+Lead
+Feedback
+UsageRecord
+Plan
+Subscription</pre>
+      </div>
+
+      <div class="card">
+        <h2>Database relationship map</h2>
+
+        <pre class="code">User
+ └── WorkspaceMember
+      └── Workspace
+           ├── Chatbot
+           │    ├── ChatbotSetting
+           │    ├── Source
+           │    │    └── SourceChunk
+           │    ├── Conversation
+           │    │    └── Message
+           │    ├── Lead
+           │    ├── Feedback
+           │    └── UsageRecord
+           │
+           └── Subscription</pre>
+      </div>
+
+      <div class="card">
+        <h2>Backend API structure</h2>
+
+        <div class="grid cols2">
+          <div class="source">
+            <b>Auth APIs</b>
+            <pre class="code">POST /api/register
+POST /api/login
+POST /api/logout
+GET  /api/me</pre>
+          </div>
+
+          <div class="source">
+            <b>Chatbot APIs</b>
+            <pre class="code">GET    /api/chatbots
+POST   /api/chatbots
+GET    /api/chatbots/{id}
+PUT    /api/chatbots/{id}
+DELETE /api/chatbots/{id}</pre>
+          </div>
+
+          <div class="source">
+            <b>Source / Training APIs</b>
+            <pre class="code">GET    /api/chatbots/{id}/sources
+POST   /api/chatbots/{id}/sources
+DELETE /api/sources/{id}
+POST   /api/chatbots/{id}/train</pre>
+          </div>
+
+          <div class="source">
+            <b>Widget Chat APIs</b>
+            <pre class="code">GET  /api/widget/{chatbotId}/config
+POST /api/widget/{chatbotId}/message
+POST /api/widget/{chatbotId}/lead
+POST /api/widget/{chatbotId}/feedback</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Build order</h2>
+
+        <pre class="code">Phase 1:
+Laravel backend + database + manual sources
+
+Phase 2:
+RAG service with manual text only
+
+Phase 3:
+Dashboard playground
+
+Phase 4:
+Website widget
+
+Phase 5:
+Conversation history + leads
+
+Phase 6:
+Website crawler
+
+Phase 7:
+Usage limits + billing</pre>
+      </div>
+
+      <div class="card">
+        <h2>Important rule</h2>
+        <p><strong>Controllers should stay thin.</strong></p>
+        <p class="muted">Do not put RAG logic directly inside controllers. Controllers should validate request, call service, and return response.</p>
+
+        <pre class="code">Bad:
+WidgetChatController contains chunking, embedding, vector search, prompt building, and OpenAI calls.
+
+Good:
+WidgetChatController calls RagAnswerService.</pre>
+      </div>
+    </section>
+
+    <!-- HOW RAG WORKS -->
+    <section id="flow" class="screen">
+      <div class="top">
+        <div>
+          <div class="crumb">Prototype / Concept Documentation</div>
+          <h1>How RAG Works</h1>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>RAG in one line</h2>
+        <p><strong>RAG = Search your own business data first, then ask the AI to answer using only the matched data.</strong></p>
+        <p class="muted">For this SaaS idea, RAG lets every website chatbot answer from that specific website’s content, FAQs, pricing, refund policy, timings, and business rules.</p>
+      </div>
+
+      <div class="card">
+        <h2>The simple product flow</h2>
+
+        <div class="flow">
+          <div class="box">📄<strong>1. Add Data</strong><span class="muted">Manual text, FAQs, website pages</span></div>
+          <div class="box">✂️<strong>2. Chunk Text</strong><span class="muted">Split long content into smaller pieces</span></div>
+          <div class="box">🔢<strong>3. Embeddings</strong><span class="muted">Convert chunks into meaning-based vectors</span></div>
+          <div class="box">🔍<strong>4. Retrieve</strong><span class="muted">Find the best chunks for the visitor question</span></div>
+          <div class="box">💬<strong>5. Generate</strong><span class="muted">LLM writes the final answer</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Why RAG is needed</h2>
+        <p>A normal AI model does not automatically know each customer’s latest website content. If a visitor asks about refund policy, prices, services, or business hours, a plain LLM may guess.</p>
+
+        <div class="grid cols2">
+          <div class="source">
+            <strong>Without RAG</strong>
+            <p class="muted">Visitor: “Can I get a refund?”<br>AI: “You may be eligible for a refund within 30 days.”</p>
+            <p><span class="pill warn">Risk: invented policy</span></p>
+          </div>
+
+          <div class="source">
+            <strong>With RAG</strong>
+            <p class="muted">System first finds: “Refunds are available within 7 days only if the service has not been used.”<br>AI answers using that exact policy.</p>
+            <p><span class="pill good">Better: grounded answer</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Two phases of RAG</h2>
+
+        <div class="grid cols2">
+          <div class="source">
+            <strong>Phase A: Training / Indexing</strong>
+            <pre class="code">Business data
 ↓
 Clean text
 ↓
@@ -80,11 +1417,12 @@ Split into chunks
 Create embeddings
 ↓
 Store in vector database</pre>
-        <p class="muted">This is not fine-tuning. You are not creating a new model. You are creating a searchable knowledge base for each chatbot.</p>
-      </div>
-      <div class="source-card">
-        <strong>Phase B: Chat / Answering</strong>
-        <pre class="code">Visitor question
+            <p class="muted">This is not fine-tuning. You are not creating a new model. You are creating a searchable knowledge base for each chatbot.</p>
+          </div>
+
+          <div class="source">
+            <strong>Phase B: Chat / Answering</strong>
+            <pre class="code">Visitor question
 ↓
 Create question embedding
 ↓
@@ -95,60 +1433,60 @@ Build prompt
 LLM generates answer
 ↓
 Show answer in widget</pre>
-        <p class="muted">At chat time, your backend retrieves only the most relevant chunks and sends them to the AI.</p>
+            <p class="muted">At chat time, your backend retrieves only the most relevant chunks and sends them to the AI.</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="card">
-    <h2>Key RAG building blocks</h2>
+      <div class="card">
+        <h2>Key RAG building blocks</h2>
 
-    <div class="source-card">
-      <strong>1. Data source</strong>
-      <p class="muted">For the MVP, use manual text, FAQs, and website page text. Later you can add PDFs, DOCX, sitemap crawling, and help-center articles.</p>
-    </div>
+        <div class="source">
+          <strong>1. Data source</strong>
+          <p class="muted">For the MVP, use manual text, FAQs, and website page text. Later you can add PDFs, DOCX, sitemap crawling, and help-center articles.</p>
+        </div>
 
-    <div class="source-card">
-      <strong>2. Chunking</strong>
-      <p class="muted">Large pages should be split into smaller chunks. Good starting point: 500–800 tokens per chunk with 50–100 token overlap. Good chunks improve answer quality.</p>
-      <pre class="code">Bad chunk:
+        <div class="source">
+          <strong>2. Chunking</strong>
+          <p class="muted">Large pages should be split into smaller chunks. Good starting point: 500–800 tokens per chunk with 50–100 token overlap. Good chunks improve answer quality.</p>
+          <pre class="code">Bad chunk:
 Home About Pricing Contact Login Footer Copyright
 
 Good chunk:
 Refunds are available within 7 days only if the service has not been used.</pre>
-    </div>
+        </div>
 
-    <div class="source-card">
-      <strong>3. Embeddings</strong>
-      <p class="muted">Embeddings convert text into numbers so the system can search by meaning, not only exact words. This lets “money back” match “refund”, and “cost” match “pricing”.</p>
-      <pre class="code">Text:
+        <div class="source">
+          <strong>3. Embeddings</strong>
+          <p class="muted">Embeddings convert text into numbers so the system can search by meaning, not only exact words. This lets “money back” match “refund”, and “cost” match “pricing”.</p>
+          <pre class="code">Text:
 Our Pro plan is 7000 PKR/month.
 
 Embedding:
 [0.021, -0.432, 0.118, ...]</pre>
-    </div>
+        </div>
 
-    <div class="source-card">
-      <strong>4. Vector database</strong>
-      <p class="muted">A vector database stores embeddings and finds similar chunks. Recommended MVP choice: PostgreSQL + pgvector.</p>
-      <pre class="code">source_chunks:
+        <div class="source">
+          <strong>4. Vector database</strong>
+          <p class="muted">A vector database stores embeddings and finds similar chunks. Recommended MVP choice: PostgreSQL + pgvector.</p>
+          <pre class="code">source_chunks:
 - workspace_id
 - chatbot_id
 - source_id
 - content
 - embedding
 - metadata</pre>
-    </div>
+        </div>
 
-    <div class="source-card">
-      <strong>5. Retriever</strong>
-      <p class="muted">The retriever searches the vector database and returns the top 3–5 matching chunks for the visitor’s question.</p>
-    </div>
+        <div class="source">
+          <strong>5. Retriever</strong>
+          <p class="muted">The retriever searches the vector database and returns the top 3–5 matching chunks for the visitor’s question.</p>
+        </div>
 
-    <div class="source-card">
-      <strong>6. Augmented prompt</strong>
-      <p class="muted">The matched chunks are inserted into the prompt so the LLM has the right business context before answering.</p>
-      <pre class="code">You are a website support assistant.
+        <div class="source">
+          <strong>6. Augmented prompt</strong>
+          <p class="muted">The matched chunks are inserted into the prompt so the LLM has the right business context before answering.</p>
+          <pre class="code">You are a website support assistant.
 
 Rules:
 - Answer only using the provided business content.
@@ -160,171 +1498,828 @@ Refunds are available within 7 days only if the service has not been used.
 
 Visitor question:
 Can I get my money back?</pre>
-    </div>
+        </div>
 
-    <div class="source-card">
-      <strong>7. Generation</strong>
-      <p class="muted">The LLM writes the final answer using the retrieved context.</p>
-      <pre class="code">Answer:
+        <div class="source">
+          <strong>7. Generation</strong>
+          <p class="muted">The LLM writes the final answer using the retrieved context.</p>
+          <pre class="code">Answer:
 Yes. Refunds are available within 7 days, but only if the service has not been used.</pre>
-    </div>
-  </div>
+        </div>
+      </div>
 
-  <div class="card">
-    <h2>Workspace-specific RAG</h2>
-    <p>Every workspace must have isolated data. A visitor asking a question on Workspace A’s website should only search Workspace A’s chunks.</p>
-    <pre class="code">SELECT *
+      <div class="card">
+        <h2>Workspace-specific RAG</h2>
+        <p>Every workspace must have isolated data. A visitor asking a question on Workspace A’s website should only search Workspace A’s chunks.</p>
+
+        <pre class="code">SELECT *
 FROM source_chunks
 WHERE workspace_id = :workspace_id
 AND chatbot_id = :chatbot_id
 ORDER BY embedding <-> :question_embedding
 LIMIT 5;</pre>
-    <p class="muted">This is how each customer gets their own “trained chatbot” without training a separate LLM.</p>
-  </div>
 
-  <div class="card">
-    <h2>End-to-end example</h2>
-    <div class="grid cols-2">
-      <div class="source-card">
-        <strong>Business data</strong>
-        <pre class="code">Our Basic plan is 3000 PKR/month.
+        <p class="muted">This is how each customer gets their own “trained chatbot” without training a separate LLM.</p>
+      </div>
+
+      <div class="card">
+        <h2>End-to-end example</h2>
+
+        <div class="grid cols2">
+          <div class="source">
+            <strong>Business data</strong>
+            <pre class="code">Our Basic plan is 3000 PKR/month.
 Our Pro plan is 7000 PKR/month.
 Refunds are available within 7 days only if the service has not been used.
 We are open Monday to Saturday from 10 AM to 7 PM.</pre>
+          </div>
+
+          <div class="source">
+            <strong>Visitor question</strong>
+            <pre class="code">How much is Pro?</pre>
+
+            <strong>Retrieved chunk</strong>
+            <pre class="code">Our Pro plan is 7000 PKR/month.</pre>
+
+            <strong>AI answer</strong>
+            <pre class="code">The Pro plan is 7000 PKR per month.</pre>
+          </div>
+        </div>
       </div>
-      <div class="source-card">
-        <strong>Visitor question</strong>
-        <pre class="code">How much is Pro?</pre>
-        <strong>Retrieved chunk</strong>
-        <pre class="code">Our Pro plan is 7000 PKR/month.</pre>
-        <strong>AI answer</strong>
-        <pre class="code">The Pro plan is 7000 PKR per month.</pre>
+
+      <div class="card">
+        <h2>Common mistakes to avoid</h2>
+
+        <div class="grid cols2">
+          <div class="source">
+            <strong>Mistake 1: Thinking RAG is model training</strong>
+            <p class="muted">RAG is not fine-tuning. You are not changing the model. You are retrieving relevant business content at answer time.</p>
+          </div>
+
+          <div class="source">
+            <strong>Mistake 2: Sending the full website to AI</strong>
+            <p class="muted">Do not send all website content. It is expensive, slow, and noisy. Retrieve top relevant chunks only.</p>
+          </div>
+
+          <div class="source">
+            <strong>Mistake 3: Bad chunks</strong>
+            <p class="muted">Messy chunks create bad answers. Clean content matters more than fancy UI.</p>
+          </div>
+
+          <div class="source">
+            <strong>Mistake 4: No fallback</strong>
+            <p class="muted">The bot must say “I’m not sure” when the answer is missing. This prevents fake pricing, fake policies, and fake guarantees.</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="card">
-    <h2>Common mistakes to avoid</h2>
-    <div class="grid cols-2">
-      <div class="source-card">
-        <strong>Mistake 1: Thinking RAG is model training</strong>
-        <p class="muted">RAG is not fine-tuning. You are not changing the model. You are retrieving relevant business content at answer time.</p>
+      <div class="card">
+        <h2>Reliable learning resources</h2>
+        <p class="muted">Use these in order. Do not jump into advanced agents before you understand retrieval, chunks, embeddings, and vector search.</p>
+
+        <div class="source">
+          <strong>1. Pinecone — What is Retrieval-Augmented Generation?</strong>
+          <p class="muted">Good beginner explanation of ingestion, retrieval, augmentation, and generation.</p>
+          <a href="https://www.pinecone.io/learn/retrieval-augmented-generation/" target="_blank">Open resource</a>
+        </div>
+
+        <div class="source">
+          <strong>2. Pinecone — RAG learning series</strong>
+          <p class="muted">Use this after the basics. Covers RAG improvements, reranking, search quality, and evaluation.</p>
+          <a href="https://www.pinecone.io/learn/series/rag/" target="_blank">Open resource</a>
+        </div>
+
+        <div class="source">
+          <strong>3. LangChain — Retrieval documentation</strong>
+          <p class="muted">Useful for understanding document loaders, text splitters, retrievers, vector stores, and RAG chains.</p>
+          <a href="https://docs.langchain.com/oss/python/langchain/retrieval" target="_blank">Open resource</a>
+        </div>
+
+        <div class="source">
+          <strong>4. OpenAI — Embeddings guide</strong>
+          <p class="muted">Read this to understand semantic search and why text is converted into vectors.</p>
+          <a href="https://platform.openai.com/docs/guides/embeddings" target="_blank">Open resource</a>
+        </div>
+
+        <div class="source">
+          <strong>5. pgvector GitHub</strong>
+          <p class="muted">Use this when you start implementing vector search in PostgreSQL.</p>
+          <a href="https://github.com/pgvector/pgvector" target="_blank">Open resource</a>
+        </div>
       </div>
-      <div class="source-card">
-        <strong>Mistake 2: Sending the full website to AI</strong>
-        <p class="muted">Do not send all website content. It is expensive, slow, and noisy. Retrieve top relevant chunks only.</p>
-      </div>
-      <div class="source-card">
-        <strong>Mistake 3: Bad chunks</strong>
-        <p class="muted">Messy chunks create bad answers. Clean content matters more than fancy UI.</p>
-      </div>
-      <div class="source-card">
-        <strong>Mistake 4: No fallback</strong>
-        <p class="muted">The bot must say “I’m not sure” when the answer is missing. This prevents fake pricing, fake policies, and fake guarantees.</p>
-      </div>
-    </div>
-  </div>
 
-  <div class="card">
-    <h2>Recommended MVP architecture</h2>
-    <pre class="code">Frontend Dashboard:
-Vue 3
+      <div class="card">
+        <h2>Your first practice task</h2>
+        <p>Before building the full SaaS, build one tiny RAG script:</p>
 
-Backend:
-Laravel
-
-Database:
-PostgreSQL
-
-Vector Search:
-pgvector
-
-Queue:
-Redis
-
-Embedding Model:
-text-embedding-3-small
-
-Answer Model:
-gpt-4.1-mini or cheaper mini/nano model
-
-Widget:
-Plain JavaScript</pre>
-  </div>
-
-  <div class="card">
-    <h2>Reliable learning resources</h2>
-    <p class="muted">Use these in order. Do not jump into advanced agents before you understand retrieval, chunks, embeddings, and vector search.</p>
-
-    <div class="source-card">
-      <strong>1. Pinecone — What is Retrieval-Augmented Generation?</strong>
-      <p class="muted">Good beginner explanation of ingestion, retrieval, augmentation, and generation.</p>
-      <a href="https://www.pinecone.io/learn/retrieval-augmented-generation/" target="_blank">Open resource</a>
-    </div>
-
-    <div class="source-card">
-      <strong>2. Pinecone — RAG learning series</strong>
-      <p class="muted">Use this after the basics. Covers RAG improvements, reranking, search quality, and evaluation.</p>
-      <a href="https://www.pinecone.io/learn/series/rag/" target="_blank">Open resource</a>
-    </div>
-
-    <div class="source-card">
-      <strong>3. LangChain — Retrieval documentation</strong>
-      <p class="muted">Useful for understanding document loaders, text splitters, retrievers, vector stores, and RAG chains.</p>
-      <a href="https://docs.langchain.com/oss/python/langchain/retrieval" target="_blank">Open resource</a>
-    </div>
-
-    <div class="source-card">
-      <strong>4. OpenAI — Embeddings guide</strong>
-      <p class="muted">Read this to understand semantic search and why text is converted into vectors.</p>
-      <a href="https://platform.openai.com/docs/guides/embeddings" target="_blank">Open resource</a>
-    </div>
-
-    <div class="source-card">
-      <strong>5. pgvector GitHub</strong>
-      <p class="muted">Use this when you start implementing vector search in PostgreSQL.</p>
-      <a href="https://github.com/pgvector/pgvector" target="_blank">Open resource</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Your first practice task</h2>
-    <p>Before building the full SaaS, build one tiny RAG script:</p>
-    <pre class="code">1. Create one hardcoded business paragraph
+        <pre class="code">1. Create one hardcoded business paragraph
 2. Split it into 3 chunks
 3. Ask a question
 4. Search matching chunk
 5. Send matched chunk + question to AI
 6. Display answer</pre>
-    <p class="muted">Then upgrade keyword search → embeddings, array storage → PostgreSQL pgvector, hardcoded text → dashboard input, playground → website widget.</p>
-  </div>
-</section>
 
-</main></div><div class="toast" id="toast"></div>
+        <p class="muted">Then upgrade keyword search → embeddings, array storage → PostgreSQL pgvector, hardcoded text → dashboard input, playground → website widget.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-const $=id=>document.getElementById(id);const qs=s=>document.querySelectorAll(s);const store='sitebot-functional-v2';
-const seed={bot:{id:'cb_123456',name:'Demo Business Assistant',business:'Demo Business',url:'https://demo-business.com',welcome:'Hi! Ask me anything about Demo Business.',fallback:'I am not fully sure. Please leave your contact details and our team will help you.',instructions:'You are a helpful website support assistant. Answer only using provided business content. If unsure, ask for contact details.'},widget:{color:'#4f46e5',name:'Demo Assistant',greeting:'Hi! How can I help you today?',placeholder:'Type your question...',domain:'demo-business.com',copied:false,custom:false},sources:[{id:id(),type:'manual',title:'Pricing and Refund Policy',url:'',content:'Our Basic plan is 3000 PKR/month. Our Pro plan is 7000 PKR/month. Refunds are available within 7 days only if the service has not been used.',status:'completed'},{id:id(),type:'faq',title:'What are your working hours?',url:'',content:'Question: What are your working hours? Answer: We are open Monday to Saturday from 10 AM to 7 PM.',status:'completed'}],convos:[],leads:[],tested:false,lastDebug:null,lastUnanswered:''};
-let state=load();function id(){return'id_'+Math.random().toString(36).slice(2,10)}function load(){try{return JSON.parse(localStorage.getItem(store))||structuredClone(seed)}catch{return structuredClone(seed)}}function save(){localStorage.setItem(store,JSON.stringify(state))}function toast(t){$('toast').textContent=t;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2200)}
-function go(id){qs('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');qs('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});render()}qs('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.go));
-function initForms(){$('botName').value=state.bot.name;$('business').value=state.bot.business;$('url').value=state.bot.url;$('welcome').value=state.bot.welcome;$('fallback').value=state.bot.fallback;$('color').value=state.widget.color;$('wName').value=state.widget.name;$('wGreeting').value=state.widget.greeting;$('wPlaceholder').value=state.widget.placeholder;$('domain').value=state.widget.domain;$('instructions').value=state.bot.instructions;$('settingsFallback').value=state.bot.fallback}
-function render(){document.documentElement.style.setProperty('--accent',state.widget.color);qs('[data-bind="business"]').forEach(e=>e.textContent=state.bot.business);qs('[data-bind="bot"]').forEach(e=>e.textContent=state.bot.name);qs('[data-bind="url"]').forEach(e=>e.textContent=state.bot.url);renderSources();renderMetrics();renderDebug();renderWidget();renderRows();renderAnalytics()}
-function chunks(t){let s=(t||'').replace(/\s+/g,' ').trim();if(!s)return[];let parts=s.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[s],out=[],cur='';for(let p of parts){if((cur+' '+p).length>300&&cur){out.push(cur.trim());cur=p}else cur+=' '+p}if(cur.trim())out.push(cur.trim());return out}
-function renderSources(){let total=state.sources.reduce((a,s)=>a+chunks(s.content).length,0);$('mSources').textContent=state.sources.length;$('mChunks').textContent=total;$('sourcesList').innerHTML=state.sources.length?state.sources.map(s=>`<div class="source"><b>${esc(s.title)}</b><br><span class="muted">${label(s.type)} · ${s.status} · ${chunks(s.content).length} chunks</span>${s.url?`<br><span class="muted">${esc(s.url)}</span>`:''}<div class="actions"><button class="btn small" onclick="alertSource('${s.id}')">Preview</button><button class="btn small" onclick="retrain('${s.id}')">Re-train</button><button class="btn small bad" onclick="delSource('${s.id}')">Delete</button></div></div>`).join(''):'<div class="empty">No sources yet.</div>'}
-function renderMetrics(){let replies=state.convos.reduce((a,c)=>a+c.messages.filter(m=>m.role==='assistant').length,0),un=state.convos.filter(c=>c.status==='Unanswered').length;$('mConvos').textContent=state.convos.length;$('mLeads').textContent=state.leads.length;$('mUnanswered').textContent=un;$('mReplies').textContent=replies;$('used').textContent=replies;$('cost').textContent='$'+(replies*.001).toFixed(3);$('settingsCost').textContent='$'+(replies*.001).toFixed(3)}
-function renderDebug(){if(!state.lastDebug){$('debug').innerHTML='<div class="empty">Ask a question to see matched source, confidence, and simulated retrieval.</div>';return}let d=state.lastDebug,cl=d.conf==='High'?'good':d.conf==='Medium'?'warn':'bad';$('debug').innerHTML=`<div class="source"><b>Matched Source</b><br><span class="muted">${esc(d.title||'No strong source found')}</span></div><div class="source"><b>Matched Chunk</b><br><span class="muted">${esc((d.chunk||'No chunk matched.').slice(0,240))}</span></div><div class="source"><b>Confidence</b><br><span class="pill ${cl}">${d.conf}</span></div>`}
-function renderWidget(){$('previewName').textContent=state.widget.name;$('widgetInput').placeholder=state.widget.placeholder;$('embed').textContent=`<script\n  src="https://sitebotstudio.com/widget.js"\n  data-chatbot-id="${state.bot.id}"\n  async>\n<\/script>`;if(!$('widgetMsgs').dataset.ready)clearChat('widgetMsgs',true)}
-function renderRows(){$('convoRows').innerHTML=state.convos.length?[...state.convos].reverse().map(c=>`<tr><td>${esc(c.visitor)}</td><td>${esc((c.messages.at(-1)?.content||'').slice(0,80))}</td><td>${esc(c.page)}</td><td><span class="pill ${c.status==='Answered'?'good':'bad'}">${c.status}</span></td><td>${c.date}</td></tr>`).join(''):'<tr><td colspan="5" class="muted">No conversations yet.</td></tr>';$('leadRows').innerHTML=state.leads.length?[...state.leads].reverse().map(l=>`<tr><td>${esc(l.name)}</td><td>${esc(l.email)}</td><td>${esc(l.phone)}</td><td>${esc(l.msg)}</td><td>${esc(l.page)}</td></tr>`).join(''):'<tr><td colspan="5" class="muted">No leads yet.</td></tr>'}
-function renderAnalytics(){let total=state.convos.length,ans=state.convos.filter(c=>c.status==='Answered').length;$('resolution').textContent=total?Math.round(ans/total*100)+'%':'0%';$('conversion').textContent=total?Math.round(state.leads.length/total*100)+'%':'0%';let counts={};state.convos.forEach(c=>{let q=c.messages.find(m=>m.role==='user')?.content||'Unknown';counts[q]=(counts[q]||0)+1});let rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]);$('questionRows').innerHTML=rows.length?rows.map(([q,n])=>`<tr><td>${esc(q)}</td><td>${n}</td><td><span class="pill ${best(q).score>=2?'good':'warn'}">${best(q).score>=2?'Answered':'Add source'}</span></td></tr>`).join(''):'<tr><td colspan="3" class="muted">No questions yet.</td></tr>'}
-function label(t){return t==='manual'?'Manual text':t==='faq'?'FAQ':'Website page'}function esc(x){return String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function addSource(type,title,url,content){state.sources.push({id:id(),type,title:title.trim(),url:url.trim(),content:content.trim(),status:'completed'});save();render();toast(label(type)+' added and trained.')}function delSource(id){state.sources=state.sources.filter(s=>s.id!==id);save();render();toast('Source deleted.')}function retrain(id){let s=state.sources.find(x=>x.id===id);if(!s)return;s.status='processing';render();setTimeout(()=>{s.status='completed';save();render();toast('Source re-trained.')},500)}function alertSource(id){let s=state.sources.find(x=>x.id===id);if(s)alert(s.title+'\n\n'+s.content)}function trainAll(){state.sources.forEach(s=>s.status='completed');save();render();toast('All sources trained.');go('playground')}
-$('botForm').onsubmit=e=>{e.preventDefault();state.bot.name=$('botName').value;state.bot.business=$('business').value;state.bot.url=$('url').value;state.bot.welcome=$('welcome').value;state.bot.fallback=$('fallback').value;state.widget.greeting=state.bot.welcome;save();initForms();render();toast('Chatbot saved.');go('sources')};$('manualForm').onsubmit=e=>{e.preventDefault();addSource('manual',$('manualTitle').value,'',$('manualContent').value)};$('faqForm').onsubmit=e=>{e.preventDefault();addSource('faq',$('faqQ').value,'',`Question: ${$('faqQ').value} Answer: ${$('faqA').value}`)};$('webForm').onsubmit=e=>{e.preventDefault();addSource('website',$('pageUrl').value,$('pageUrl').value,$('pageText').value)};qs('[data-tab]').forEach(b=>b.onclick=()=>{qs('[data-tab]').forEach(x=>x.classList.remove('active'));b.classList.add('active');qs('.tab').forEach(t=>t.classList.remove('active'));$(b.dataset.tab).classList.add('active')});
-function words(t){let stop=new Set('what is are the a an do does you your i we our can get to of in on for and or with me my about please tell'.split(' '));return(t||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w=>w.length>2&&!stop.has(w))}function syn(q,c){q=q.toLowerCase();c=c.toLowerCase();let groups=[['price','pricing','cost','fee','charges','plan','basic','pro','pkr'],['refund','return','money'],['time','timing','hours','open','working','monday','saturday'],['delivery','ship','shipping'],['contact','human','call','phone','email'],['service','services','offer','provide']];let score=0;groups.forEach(g=>{if(g.some(w=>q.includes(w))&&g.some(w=>c.includes(w)))score+=3});return score}function best(q){let qw=words(q),b={score:0,source:null,chunk:''};state.sources.forEach(s=>chunks(s.content).forEach(ch=>{let cw=words(ch),score=qw.filter(w=>cw.includes(w)).length+syn(q,ch);if(score>b.score)b={score,source:s,chunk:ch}}));return b}
-function answer(q){let b=best(q),conf=b.score>=5?'High':b.score>=2?'Medium':'Low';state.lastDebug={title:b.source?.title||'',chunk:b.chunk,conf};if(conf==='Low'){state.lastUnanswered=q;return state.bot.fallback+'\n\nDemo: lead form would appear here.'}let text=b.chunk.replace(/Question:/gi,'').replace(/Answer:/gi,'').replace(/\s+/g,' ').trim();return 'Based on the saved business data: '+text}
-function ask(q,where){let a=answer(q),status=state.lastDebug.conf==='Low'?'Unanswered':'Answered';let c={id:id(),visitor:where==='widget'?'Website Visitor':'Playground Test',page:where==='widget'?'/demo-page':'/playground',status,date:new Date().toLocaleString(),messages:[{role:'user',content:q},{role:'assistant',content:a}]};state.convos.push(c);state.tested=true;save();render();return a}
-function bubble(box,role,text){let d=document.createElement('div');d.className='bubble '+(role==='user'?'user':'bot');d.textContent=text;$(box).appendChild(d);$(box).scrollTop=$(box).scrollHeight}function clearChat(box,widget=false){$(box).innerHTML='';bubble(box,'bot',widget?state.widget.greeting:state.bot.welcome);if(widget)$('widgetMsgs').dataset.ready='1'}$('playForm').onsubmit=e=>{e.preventDefault();let q=$('playInput').value.trim();if(!q)return;bubble('playMsgs','user',q);$('playInput').value='';let t=document.createElement('div');t.className='bubble bot';t.textContent='Typing...';$('playMsgs').appendChild(t);setTimeout(()=>{t.textContent=ask(q,'playground')},350)};$('widgetChat').onsubmit=e=>{e.preventDefault();let q=$('widgetInput').value.trim();if(!q)return;bubble('widgetMsgs','user',q);$('widgetInput').value='';setTimeout(()=>bubble('widgetMsgs','bot',ask(q,'widget')),300)};function addUnansweredFAQ(){if(!state.lastUnanswered)return toast('No unanswered question yet.');let a=prompt('Write correct answer for:\n'+state.lastUnanswered);if(!a)return;addSource('faq',state.lastUnanswered,'',`Question: ${state.lastUnanswered} Answer: ${a}`);state.lastUnanswered=''}
-$('widgetForm').onsubmit=e=>{e.preventDefault();state.widget.color=$('color').value;state.widget.name=$('wName').value;state.widget.greeting=$('wGreeting').value;state.widget.placeholder=$('wPlaceholder').value;state.widget.domain=$('domain').value;state.widget.custom=true;save();render();clearChat('widgetMsgs',true);toast('Widget saved.')};function toggleWidget(open){$('widgetBox').style.display=open?'block':'none';$('launcher').style.display=open?'none':'grid'}async function copyScript(){try{await navigator.clipboard.writeText($('embed').textContent);state.widget.copied=true;save();toast('Embed script copied.')}catch{toast('Copy failed. Copy manually.')}}
-$('leadForm').onsubmit=e=>{e.preventDefault();state.leads.push({id:id(),name:$('leadName').value,email:$('leadEmail').value,phone:$('leadPhone').value,page:$('leadPage').value,msg:$('leadMsg').value});save();render();toast('Lead added.');$('leadForm').reset();$('leadPage').value='/pricing';$('leadMsg').value='I want pricing details.'};function saveSettings(){state.bot.instructions=$('instructions').value;state.bot.fallback=$('settingsFallback').value;save();initForms();render();toast('Settings saved.')}
-function exportCSV(type){let rows=type==='leads'?[['Name','Email','Phone','Message','Page'],...state.leads.map(l=>[l.name,l.email,l.phone,l.msg,l.page])]:[['Visitor','Last message','Page','Status','Date'],...state.convos.map(c=>[c.visitor,c.messages.at(-1)?.content||'',c.page,c.status,c.date])];let csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n'),blob=new Blob([csv],{type:'text/csv'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=type+'.csv';a.click();URL.revokeObjectURL(url)}function resetDemo(){if(!confirm('Reset demo data?'))return;localStorage.removeItem(store);state=load();initForms();clearChat('playMsgs');clearChat('widgetMsgs',true);render();toast('Demo reset.')}
-initForms();clearChat('playMsgs');clearChat('widgetMsgs',true);render();
+const $ = id => document.getElementById(id);
+const qs = selector => document.querySelectorAll(selector);
+const store = "sitebot-functional-v3";
+
+function makeId(){
+  return "id_" + Math.random().toString(36).slice(2,10);
+}
+
+const seed = {
+  bot:{
+    id:"cb_123456",
+    name:"Demo Business Assistant",
+    business:"Demo Business",
+    url:"https://demo-business.com",
+    welcome:"Hi! Ask me anything about Demo Business.",
+    fallback:"I am not fully sure. Please leave your contact details and our team will help you.",
+    instructions:"You are a helpful website support assistant. Answer only using provided business content. If unsure, ask for contact details."
+  },
+  widget:{
+    color:"#4f46e5",
+    name:"Demo Assistant",
+    greeting:"Hi! How can I help you today?",
+    placeholder:"Type your question...",
+    domain:"demo-business.com",
+    copied:false,
+    custom:false
+  },
+  sources:[
+    {
+      id:makeId(),
+      type:"manual",
+      title:"Pricing and Refund Policy",
+      url:"",
+      content:"Our Basic plan is 3000 PKR/month. Our Pro plan is 7000 PKR/month. Refunds are available within 7 days only if the service has not been used.",
+      status:"completed"
+    },
+    {
+      id:makeId(),
+      type:"faq",
+      title:"What are your working hours?",
+      url:"",
+      content:"Question: What are your working hours? Answer: We are open Monday to Saturday from 10 AM to 7 PM.",
+      status:"completed"
+    }
+  ],
+  convos:[],
+  leads:[],
+  tested:false,
+  lastDebug:null,
+  lastUnanswered:""
+};
+
+let state = load();
+
+function load(){
+  try{
+    return JSON.parse(localStorage.getItem(store)) || structuredClone(seed);
+  }catch{
+    return structuredClone(seed);
+  }
+}
+
+function save(){
+  localStorage.setItem(store, JSON.stringify(state));
+}
+
+function toast(text){
+  $("toast").textContent = text;
+  $("toast").classList.add("show");
+  setTimeout(() => $("toast").classList.remove("show"), 2200);
+}
+
+function go(id){
+  qs(".screen").forEach(screen => screen.classList.remove("active"));
+  $(id).classList.add("active");
+
+  qs(".nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.go === id);
+  });
+
+  window.scrollTo({top:0,behavior:"smooth"});
+  render();
+}
+
+qs(".nav button").forEach(button => {
+  button.onclick = () => go(button.dataset.go);
+});
+
+function initForms(){
+  $("botName").value = state.bot.name;
+  $("business").value = state.bot.business;
+  $("url").value = state.bot.url;
+  $("welcome").value = state.bot.welcome;
+  $("fallback").value = state.bot.fallback;
+
+  $("color").value = state.widget.color;
+  $("wName").value = state.widget.name;
+  $("wGreeting").value = state.widget.greeting;
+  $("wPlaceholder").value = state.widget.placeholder;
+  $("domain").value = state.widget.domain;
+
+  $("instructions").value = state.bot.instructions;
+  $("settingsFallback").value = state.bot.fallback;
+}
+
+function render(){
+  document.documentElement.style.setProperty("--accent", state.widget.color);
+
+  qs('[data-bind="business"]').forEach(el => el.textContent = state.bot.business);
+  qs('[data-bind="bot"]').forEach(el => el.textContent = state.bot.name);
+  qs('[data-bind="url"]').forEach(el => el.textContent = state.bot.url);
+
+  renderSources();
+  renderMetrics();
+  renderDebug();
+  renderWidget();
+  renderRows();
+  renderAnalytics();
+}
+
+function chunks(text){
+  let cleaned = (text || "").replace(/\s+/g," ").trim();
+  if(!cleaned) return [];
+
+  let parts = cleaned.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [cleaned];
+  let output = [];
+  let current = "";
+
+  for(let part of parts){
+    if((current + " " + part).length > 300 && current){
+      output.push(current.trim());
+      current = part;
+    }else{
+      current += " " + part;
+    }
+  }
+
+  if(current.trim()) output.push(current.trim());
+  return output;
+}
+
+function label(type){
+  if(type === "manual") return "Manual text";
+  if(type === "faq") return "FAQ";
+  return "Website page";
+}
+
+function esc(value){
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[char]));
+}
+
+function renderSources(){
+  let totalChunks = state.sources.reduce((total, source) => {
+    return total + chunks(source.content).length;
+  }, 0);
+
+  $("mSources").textContent = state.sources.length;
+  $("mChunks").textContent = totalChunks;
+
+  if(!state.sources.length){
+    $("sourcesList").innerHTML = '<div class="empty">No sources yet.</div>';
+    return;
+  }
+
+  $("sourcesList").innerHTML = state.sources.map(source => `
+    <div class="source">
+      <b>${esc(source.title)}</b><br>
+      <span class="muted">${label(source.type)} · ${source.status} · ${chunks(source.content).length} chunks</span>
+      ${source.url ? `<br><span class="muted">${esc(source.url)}</span>` : ""}
+      <div class="actions">
+        <button class="btn small" onclick="alertSource('${source.id}')">Preview</button>
+        <button class="btn small" onclick="retrain('${source.id}')">Re-train</button>
+        <button class="btn small bad" onclick="delSource('${source.id}')">Delete</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderMetrics(){
+  let replies = state.convos.reduce((total, convo) => {
+    return total + convo.messages.filter(msg => msg.role === "assistant").length;
+  }, 0);
+
+  let unanswered = state.convos.filter(convo => convo.status === "Unanswered").length;
+
+  $("mConvos").textContent = state.convos.length;
+  $("mLeads").textContent = state.leads.length;
+  $("mUnanswered").textContent = unanswered;
+  $("mReplies").textContent = replies;
+  $("used").textContent = replies;
+
+  let cost = "$" + (replies * 0.001).toFixed(3);
+  $("cost").textContent = cost;
+  $("settingsCost").textContent = cost;
+}
+
+function renderDebug(){
+  if(!state.lastDebug){
+    $("debug").innerHTML = '<div class="empty">Ask a question to see matched source, confidence, and simulated retrieval.</div>';
+    return;
+  }
+
+  let debug = state.lastDebug;
+  let className = debug.conf === "High" ? "good" : debug.conf === "Medium" ? "warn" : "bad";
+
+  $("debug").innerHTML = `
+    <div class="source">
+      <b>Matched Source</b><br>
+      <span class="muted">${esc(debug.title || "No strong source found")}</span>
+    </div>
+
+    <div class="source">
+      <b>Matched Chunk</b><br>
+      <span class="muted">${esc((debug.chunk || "No chunk matched.").slice(0,240))}</span>
+    </div>
+
+    <div class="source">
+      <b>Confidence</b><br>
+      <span class="pill ${className}">${debug.conf}</span>
+    </div>
+  `;
+}
+
+function renderWidget(){
+  $("previewName").textContent = state.widget.name;
+  $("widgetInput").placeholder = state.widget.placeholder;
+
+  $("embed").textContent =
+`<script
+  src="https://sitebotstudio.com/widget.js"
+  data-chatbot-id="${state.bot.id}"
+  async>
+<\/script>`;
+
+  if(!$("widgetMsgs").dataset.ready){
+    clearChat("widgetMsgs", true);
+  }
+}
+
+function renderRows(){
+  if(!state.convos.length){
+    $("convoRows").innerHTML = '<tr><td colspan="5" class="muted">No conversations yet.</td></tr>';
+  }else{
+    $("convoRows").innerHTML = [...state.convos].reverse().map(convo => `
+      <tr>
+        <td>${esc(convo.visitor)}</td>
+        <td>${esc((convo.messages.at(-1)?.content || "").slice(0,80))}</td>
+        <td>${esc(convo.page)}</td>
+        <td><span class="pill ${convo.status === "Answered" ? "good" : "bad"}">${convo.status}</span></td>
+        <td>${convo.date}</td>
+      </tr>
+    `).join("");
+  }
+
+  if(!state.leads.length){
+    $("leadRows").innerHTML = '<tr><td colspan="5" class="muted">No leads yet.</td></tr>';
+  }else{
+    $("leadRows").innerHTML = [...state.leads].reverse().map(lead => `
+      <tr>
+        <td>${esc(lead.name)}</td>
+        <td>${esc(lead.email)}</td>
+        <td>${esc(lead.phone)}</td>
+        <td>${esc(lead.msg)}</td>
+        <td>${esc(lead.page)}</td>
+      </tr>
+    `).join("");
+  }
+}
+
+function renderAnalytics(){
+  let total = state.convos.length;
+  let answered = state.convos.filter(convo => convo.status === "Answered").length;
+
+  $("resolution").textContent = total ? Math.round(answered / total * 100) + "%" : "0%";
+  $("conversion").textContent = total ? Math.round(state.leads.length / total * 100) + "%" : "0%";
+
+  let counts = {};
+  state.convos.forEach(convo => {
+    let question = convo.messages.find(msg => msg.role === "user")?.content || "Unknown";
+    counts[question] = (counts[question] || 0) + 1;
+  });
+
+  let rows = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+
+  if(!rows.length){
+    $("questionRows").innerHTML = '<tr><td colspan="3" class="muted">No questions yet.</td></tr>';
+    return;
+  }
+
+  $("questionRows").innerHTML = rows.map(([question,count]) => {
+    let matched = best(question).score >= 2;
+    return `
+      <tr>
+        <td>${esc(question)}</td>
+        <td>${count}</td>
+        <td><span class="pill ${matched ? "good" : "warn"}">${matched ? "Answered" : "Add source"}</span></td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function addSource(type,title,url,content){
+  state.sources.push({
+    id:makeId(),
+    type,
+    title:title.trim(),
+    url:url.trim(),
+    content:content.trim(),
+    status:"completed"
+  });
+
+  save();
+  render();
+  toast(label(type) + " added and trained.");
+}
+
+function delSource(id){
+  state.sources = state.sources.filter(source => source.id !== id);
+  save();
+  render();
+  toast("Source deleted.");
+}
+
+function retrain(id){
+  let source = state.sources.find(item => item.id === id);
+  if(!source) return;
+
+  source.status = "processing";
+  render();
+
+  setTimeout(() => {
+    source.status = "completed";
+    save();
+    render();
+    toast("Source re-trained.");
+  }, 500);
+}
+
+function alertSource(id){
+  let source = state.sources.find(item => item.id === id);
+  if(source){
+    alert(source.title + "\n\n" + source.content);
+  }
+}
+
+function trainAll(){
+  state.sources.forEach(source => source.status = "completed");
+  save();
+  render();
+  toast("All sources trained.");
+  go("playground");
+}
+
+$("botForm").onsubmit = event => {
+  event.preventDefault();
+
+  state.bot.name = $("botName").value;
+  state.bot.business = $("business").value;
+  state.bot.url = $("url").value;
+  state.bot.welcome = $("welcome").value;
+  state.bot.fallback = $("fallback").value;
+  state.widget.greeting = state.bot.welcome;
+
+  save();
+  initForms();
+  render();
+  toast("Chatbot saved.");
+  go("sources");
+};
+
+$("manualForm").onsubmit = event => {
+  event.preventDefault();
+  addSource("manual", $("manualTitle").value, "", $("manualContent").value);
+};
+
+$("faqForm").onsubmit = event => {
+  event.preventDefault();
+  addSource("faq", $("faqQ").value, "", `Question: ${$("faqQ").value} Answer: ${$("faqA").value}`);
+};
+
+$("webForm").onsubmit = event => {
+  event.preventDefault();
+  addSource("website", $("pageUrl").value, $("pageUrl").value, $("pageText").value);
+};
+
+qs("[data-tab]").forEach(button => {
+  button.onclick = () => {
+    qs("[data-tab]").forEach(item => item.classList.remove("active"));
+    button.classList.add("active");
+
+    qs(".tab").forEach(tab => tab.classList.remove("active"));
+    $(button.dataset.tab).classList.add("active");
+  };
+});
+
+function words(text){
+  let stop = new Set("what is are the a an do does you your i we our can get to of in on for and or with me my about please tell".split(" "));
+
+  return (text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g," ")
+    .split(/\s+/)
+    .filter(word => word.length > 2 && !stop.has(word));
+}
+
+function synonymScore(question, chunk){
+  question = question.toLowerCase();
+  chunk = chunk.toLowerCase();
+
+  let groups = [
+    ["price","pricing","cost","fee","charges","plan","basic","pro","pkr"],
+    ["refund","return","money"],
+    ["time","timing","hours","open","working","monday","saturday"],
+    ["delivery","ship","shipping"],
+    ["contact","human","call","phone","email"],
+    ["service","services","offer","provide"]
+  ];
+
+  let score = 0;
+
+  groups.forEach(group => {
+    if(group.some(word => question.includes(word)) && group.some(word => chunk.includes(word))){
+      score += 3;
+    }
+  });
+
+  return score;
+}
+
+function best(question){
+  let questionWords = words(question);
+  let bestMatch = {
+    score:0,
+    source:null,
+    chunk:""
+  };
+
+  state.sources.forEach(source => {
+    chunks(source.content).forEach(chunk => {
+      let chunkWords = words(chunk);
+      let overlap = questionWords.filter(word => chunkWords.includes(word)).length;
+      let score = overlap + synonymScore(question, chunk);
+
+      if(score > bestMatch.score){
+        bestMatch = {
+          score,
+          source,
+          chunk
+        };
+      }
+    });
+  });
+
+  return bestMatch;
+}
+
+function answer(question){
+  let match = best(question);
+  let confidence = match.score >= 5 ? "High" : match.score >= 2 ? "Medium" : "Low";
+
+  state.lastDebug = {
+    title: match.source?.title || "",
+    chunk: match.chunk,
+    conf: confidence
+  };
+
+  if(confidence === "Low"){
+    state.lastUnanswered = question;
+    return state.bot.fallback + "\n\nDemo: lead form would appear here.";
+  }
+
+  let text = match.chunk
+    .replace(/Question:/gi,"")
+    .replace(/Answer:/gi,"")
+    .replace(/\s+/g," ")
+    .trim();
+
+  return "Based on the saved business data: " + text;
+}
+
+function ask(question, where){
+  let reply = answer(question);
+  let status = state.lastDebug.conf === "Low" ? "Unanswered" : "Answered";
+
+  let convo = {
+    id:makeId(),
+    visitor:where === "widget" ? "Website Visitor" : "Playground Test",
+    page:where === "widget" ? "/demo-page" : "/playground",
+    status,
+    date:new Date().toLocaleString(),
+    messages:[
+      {role:"user",content:question},
+      {role:"assistant",content:reply}
+    ]
+  };
+
+  state.convos.push(convo);
+  state.tested = true;
+
+  save();
+  render();
+
+  return reply;
+}
+
+function bubble(box, role, text){
+  let div = document.createElement("div");
+  div.className = "bubble " + (role === "user" ? "user" : "bot");
+  div.textContent = text;
+
+  $(box).appendChild(div);
+  $(box).scrollTop = $(box).scrollHeight;
+}
+
+function clearChat(box, widget=false){
+  $(box).innerHTML = "";
+  bubble(box, "bot", widget ? state.widget.greeting : state.bot.welcome);
+
+  if(widget){
+    $("widgetMsgs").dataset.ready = "1";
+  }
+}
+
+$("playForm").onsubmit = event => {
+  event.preventDefault();
+
+  let question = $("playInput").value.trim();
+  if(!question) return;
+
+  bubble("playMsgs", "user", question);
+  $("playInput").value = "";
+
+  let typing = document.createElement("div");
+  typing.className = "bubble bot";
+  typing.textContent = "Typing...";
+  $("playMsgs").appendChild(typing);
+
+  setTimeout(() => {
+    typing.textContent = ask(question, "playground");
+  }, 350);
+};
+
+$("widgetChat").onsubmit = event => {
+  event.preventDefault();
+
+  let question = $("widgetInput").value.trim();
+  if(!question) return;
+
+  bubble("widgetMsgs", "user", question);
+  $("widgetInput").value = "";
+
+  setTimeout(() => {
+    bubble("widgetMsgs", "bot", ask(question, "widget"));
+  }, 300);
+};
+
+function addUnansweredFAQ(){
+  if(!state.lastUnanswered){
+    toast("No unanswered question yet.");
+    return;
+  }
+
+  let correctAnswer = prompt("Write correct answer for:\n" + state.lastUnanswered);
+  if(!correctAnswer) return;
+
+  addSource("faq", state.lastUnanswered, "", `Question: ${state.lastUnanswered} Answer: ${correctAnswer}`);
+  state.lastUnanswered = "";
+}
+
+$("widgetForm").onsubmit = event => {
+  event.preventDefault();
+
+  state.widget.color = $("color").value;
+  state.widget.name = $("wName").value;
+  state.widget.greeting = $("wGreeting").value;
+  state.widget.placeholder = $("wPlaceholder").value;
+  state.widget.domain = $("domain").value;
+  state.widget.custom = true;
+
+  save();
+  render();
+  clearChat("widgetMsgs", true);
+  toast("Widget saved.");
+};
+
+function toggleWidget(open){
+  $("widgetBox").style.display = open ? "block" : "none";
+  $("launcher").style.display = open ? "none" : "grid";
+}
+
+async function copyScript(){
+  try{
+    await navigator.clipboard.writeText($("embed").textContent);
+    state.widget.copied = true;
+    save();
+    toast("Embed script copied.");
+  }catch{
+    toast("Copy failed. Copy manually.");
+  }
+}
+
+$("leadForm").onsubmit = event => {
+  event.preventDefault();
+
+  state.leads.push({
+    id:makeId(),
+    name:$("leadName").value,
+    email:$("leadEmail").value,
+    phone:$("leadPhone").value,
+    page:$("leadPage").value,
+    msg:$("leadMsg").value
+  });
+
+  save();
+  render();
+  toast("Lead added.");
+
+  $("leadForm").reset();
+  $("leadPage").value = "/pricing";
+  $("leadMsg").value = "I want pricing details.";
+};
+
+function saveSettings(){
+  state.bot.instructions = $("instructions").value;
+  state.bot.fallback = $("settingsFallback").value;
+
+  save();
+  initForms();
+  render();
+  toast("Settings saved.");
+}
+
+function exportCSV(type){
+  let rows;
+
+  if(type === "leads"){
+    rows = [
+      ["Name","Email","Phone","Message","Page"],
+      ...state.leads.map(lead => [lead.name, lead.email, lead.phone, lead.msg, lead.page])
+    ];
+  }else{
+    rows = [
+      ["Visitor","Last message","Page","Status","Date"],
+      ...state.convos.map(convo => [
+        convo.visitor,
+        convo.messages.at(-1)?.content || "",
+        convo.page,
+        convo.status,
+        convo.date
+      ])
+    ];
+  }
+
+  let csv = rows
+    .map(row => row.map(value => '"' + String(value).replace(/"/g,'""') + '"').join(","))
+    .join("\n");
+
+  let blob = new Blob([csv], {type:"text/csv"});
+  let url = URL.createObjectURL(blob);
+  let link = document.createElement("a");
+
+  link.href = url;
+  link.download = type + ".csv";
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
+
+function resetDemo(){
+  if(!confirm("Reset demo data?")) return;
+
+  localStorage.removeItem(store);
+  state = load();
+
+  initForms();
+  clearChat("playMsgs");
+  clearChat("widgetMsgs", true);
+  render();
+  toast("Demo reset.");
+}
+
+initForms();
+clearChat("playMsgs");
+clearChat("widgetMsgs", true);
+render();
 </script>
-</body></html>
+</body>
+</html>
